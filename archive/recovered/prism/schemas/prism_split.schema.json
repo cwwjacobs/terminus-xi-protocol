@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gts.v1/prism_split.schema.json",
+  "title": "PrismSplit",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "prism_split_id",
+    "created_at_utc",
+    "prism_input_id",
+    "channels"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "prism_split"
+    },
+    "schema_version": {
+      "const": "gts.v1"
+    },
+    "prism_split_id": {
+      "type": "string",
+      "pattern": "^prm_sp_[A-Za-z0-9._-]+$"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prism_input_id": {
+      "type": "string"
+    },
+    "channels": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "goal_alignment",
+        "grounding_integrity",
+        "risk_pressure",
+        "genericity",
+        "novelty",
+        "focus_coherence",
+        "audit_completeness"
+      ],
+      "properties": {
+        "goal_alignment": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "grounding_integrity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "risk_pressure": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "genericity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "novelty": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "focus_coherence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "audit_completeness": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      }
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "inside_gold",
+          "amber_drift",
+          "red_lock_candidate",
+          "grey_genericity",
+          "violet_focus_drop",
+          "requires_review"
+        ]
+      },
+      "default": []
+    },
+    "reason_short": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 280
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  }
+}

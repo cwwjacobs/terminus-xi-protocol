@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/xi/check-contract.schema.json",
+  "title": "Terminus XI Check Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "check_id", "version", "deterministic", "input_contract", "pass_condition"],
+  "properties": {
+    "schema": {"const": "terminus-xi.check-contract.v1"},
+    "check_id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "deterministic": {"const": true},
+    "input_contract": {"type": "string", "minLength": 1},
+    "pass_condition": {"type": "string", "minLength": 1},
+    "failure_codes": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+      "uniqueItems": true
+    }
+  }
+}

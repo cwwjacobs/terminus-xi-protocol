@@ -1,0 +1,13 @@
+path	status
+xiPrismAgent_v.01.py	FAIL: IndentationError: unexpected indent (<unknown>, line 1)
+xi_agents_unstubbed_v1/archivist_agent.py	OK
+xi_agents_unstubbed_v1/artifactor_agent.py	OK
+xi_agents_unstubbed_v1/xi_audit_agent.py	OK
+xi_agents_unstubbed_v1/xi_curate_agent.py	OK
+xi_agents_unstubbed_v1/xi_provenance_agent.py	OK
+xi_audit_agent.py	OK
+xi_curate.py	OK
+xi_curate_agent.py	OK
+xi_provenance_agent.py	OK
+02_prism_expanded/xiPrism_design_pack/prism_agent_design_pack/xiPrismAgent_completed.py	OK
+02_prism_expanded/xiPrism_design_pack/prism_agent_design_pack/xiPrismAgent_v.01.py	OK

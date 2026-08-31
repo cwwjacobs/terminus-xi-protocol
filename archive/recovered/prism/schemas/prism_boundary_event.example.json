@@ -1,0 +1,16 @@
+{
+  "schema_name": "prism_boundary_event",
+  "schema_version": "gts.v1",
+  "boundary_event_id": "prm_be_0001",
+  "created_at_utc": "2026-03-13T00:00:00Z",
+  "prism_split_id": "prm_sp_0001",
+  "boundary_state": "inside_gold",
+  "recommended_action": "continue",
+  "trigger_channels": [
+    "goal_alignment",
+    "grounding_integrity",
+    "audit_completeness"
+  ],
+  "reason_short": "Artifact remains within gold boundary.",
+  "notes": []
+}
