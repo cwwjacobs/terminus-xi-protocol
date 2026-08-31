@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/proof/projected-arm.schema.json",
+  "title": "Projected Arm Summary",
+  "description": "The public-safe summary of one arm that documentation and media are allowed to render. Every field is derived from admitted evidence; nothing here is authored by hand.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["arm_id", "label", "capability_enabled", "admission", "claim_count", "blocking_codes", "headline"],
+  "properties": {
+    "arm_id": {"type": "string", "minLength": 1},
+    "label": {"type": "string", "minLength": 1},
+    "capability_enabled": {"type": "boolean"},
+    "admission": {"enum": ["ADMIT", "REJECT", "REVIEW", "ERROR"]},
+    "claim_count": {"type": "integer", "minimum": 0},
+    "blocking_codes": {"type": "array", "items": {"type": "string"}},
+    "headline": {"type": "string", "minLength": 1},
+    "sample_claim": {"type": ["string", "null"]}
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "schema": "terminus-xi.check-contract-set.v1",
+  "set_id": "terminus-proof.package",
+  "version": "1.0.0",
+  "description": "The gates that stand between a pair of executions and a publishable proof. Parity is proved from what each arm recorded, not assumed from the specification; the proof's own claim is established only by the arms' XI outcomes; and no projection reaches documentation or media until the redaction gate has passed.",
+  "contracts": [
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.artifact_shape",
+      "version": "1.0.0",
+      "title": "Package artifact has the frozen shape",
+      "category": "input",
+      "deterministic": true,
+      "implementation": "xi.schema_conformance.v1",
+      "input_contract": "the whole package artifact",
+      "input_pointers": {"artifact": ""},
+      "pass_condition": "the artifact validates against terminus-proof.proof-artifact.v1",
+      "failure_codes": ["SCHEMA_VIOLATION"],
+      "config": {"schema_id": "terminus-proof.proof-artifact.v1"}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.parity.model",
+      "version": "1.0.0",
+      "title": "Both arms recorded the same model identity",
+      "category": "parity",
+      "deterministic": true,
+      "implementation": "proof.parity_identity.v1",
+      "input_contract": "the model identity each arm recorded for itself",
+      "input_pointers": {
+        "baseline": "/arms/baseline/evidence/model",
+        "augmented": "/arms/augmented/evidence/model"
+      },
+      "pass_condition": "the two recorded model identities are canonically identical",
+      "failure_codes": ["MODEL_IDENTITY_MISMATCH"],
+      "config": {"mismatch_code": "MODEL_IDENTITY_MISMATCH", "subject": "model identity"}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.parity.fixture",
+      "version": "1.0.0",
+      "title": "Both arms ran against the same fixture",
+      "category": "parity",
+      "deterministic": true,
+      "implementation": "proof.parity_identity.v1",
+      "input_contract": "the fixture identity each arm recorded for itself",
+      "input_pointers": {
+        "baseline": "/arms/baseline/evidence/fixture",
+        "augmented": "/arms/augmented/evidence/fixture"
+      },
+      "pass_condition": "the two recorded fixture identities are canonically identical",
+      "failure_codes": ["FIXTURE_IDENTITY_MISMATCH"],
+      "config": {"mismatch_code": "FIXTURE_IDENTITY_MISMATCH", "subject": "fixture identity"}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.parity.tool_surface",
+      "version": "1.0.0",
+      "title": "Both arms exposed the same tool surface",
+      "category": "parity",
+      "deterministic": true,
+      "implementation": "proof.parity_identity.v1",
+      "input_contract": "the tool surface each arm recorded for itself",
+      "input_pointers": {
+        "baseline": "/arms/baseline/evidence/tool_surface",
+        "augmented": "/arms/augmented/evidence/tool_surface"
+      },
+      "pass_condition": "the two recorded tool surfaces are canonically identical",
+      "failure_codes": ["TOOL_SURFACE_MISMATCH"],
+      "config": {"mismatch_code": "TOOL_SURFACE_MISMATCH", "subject": "tool surface"}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.parity.config",
+      "version": "1.0.0",
+      "title": "Configuration differs only by the declared changed variable",
+      "category": "parity",
+      "deterministic": true,
+      "implementation": "proof.parity_config.v1",
+      "input_contract": "both recorded configurations and the declared changed variable",
+      "input_pointers": {
+        "baseline": "/arms/baseline/evidence/config",
+        "augmented": "/arms/augmented/evidence/config",
+        "changed_variable": "/changed_variable"
+      },
+      "pass_condition": "the declared changed variable actually differs with the declared values and no other configuration key differs",
+      "failure_codes": ["CONFIG_DRIFT_UNDECLARED", "CHANGED_VARIABLE_ABSENT", "INPUT_SHAPE_INVALID"]
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.spec.faithful",
+      "version": "1.0.0",
+      "title": "Recorded executions match the specification they claim to implement",
+      "category": "integrity",
+      "deterministic": true,
+      "implementation": "proof.spec_faithful.v1",
+      "input_contract": "the declared surface from the demo spec and both recorded arms",
+      "input_pointers": {
+        "declared": "/declared",
+        "baseline": "/arms/baseline/evidence",
+        "augmented": "/arms/augmented/evidence"
+      },
+      "pass_condition": "each arm's recorded model, tool surface, and configuration equal what the demo spec declared for it",
+      "failure_codes": ["CONTRADICTION_DETECTED", "INPUT_SHAPE_INVALID"]
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.arms.bound",
+      "version": "1.0.0",
+      "title": "Each arm file is bound to the artifact by canonical digest",
+      "category": "integrity",
+      "deterministic": true,
+      "implementation": "proof.arm_binding.v1",
+      "input_contract": "both arm records",
+      "input_pointers": {"arms": "/arms"},
+      "pass_condition": "each arm's document_sha256 equals the canonical digest of its own embedded evidence bundle and its arm_id agrees with the bundle",
+      "failure_codes": ["HASH_MISMATCH", "CONTRADICTION_DETECTED", "INPUT_SHAPE_INVALID"]
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.evidence.complete",
+      "version": "1.0.0",
+      "title": "Both arms submitted complete evidence",
+      "category": "evidence",
+      "deterministic": true,
+      "implementation": "proof.evidence_complete.v1",
+      "input_contract": "both arm records",
+      "input_pointers": {"arms": "/arms"},
+      "pass_condition": "each arm carries a non-empty transcript, a non-empty evidence set, a recorded XI outcome over the full arm contract set, and a raw-execution digest",
+      "failure_codes": ["EVIDENCE_INCOMPLETE", "EVIDENCE_MISSING", "INPUT_SHAPE_INVALID"],
+      "config": {"min_transcript_steps": 3}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.claim.supported",
+      "version": "1.0.0",
+      "title": "The proof's own claim is established by the arms' XI outcomes",
+      "category": "claim",
+      "deterministic": true,
+      "implementation": "proof.claim_supported.v1",
+      "input_contract": "the proof claim and both arms' XI outcomes",
+      "input_pointers": {
+        "claim": "/claim",
+        "baseline_xi": "/arms/baseline/xi",
+        "augmented_xi": "/arms/augmented/xi"
+      },
+      "pass_condition": "the baseline arm was rejected at the claim boundary, the augmented arm was admitted, and every code that blocked the baseline arm is absent from the augmented arm",
+      "failure_codes": ["CLAIM_UNSUPPORTED", "INPUT_SHAPE_INVALID"],
+      "config": {
+        "required_baseline_admission": ["REJECT", "ERROR", "REVIEW"],
+        "required_augmented_admission": ["ADMIT"],
+        "require_blocking_codes_cleared": true,
+        "require_baseline_blocking_codes": true
+      }
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "proof.redaction.public_safe",
+      "version": "1.0.0",
+      "title": "Nothing the policy denies survives into the public surface",
+      "category": "redaction",
+      "deterministic": true,
+      "implementation": "proof.redaction.v1",
+      "input_contract": "the public projection, both arm bundles, and the redaction policy that produced them",
+      "input_pointers": {
+        "projection": "/public_projection",
+        "baseline": "/arms/baseline/evidence",
+        "augmented": "/arms/augmented/evidence",
+        "policy": "/redaction"
+      },
+      "pass_condition": "no deny pattern matches any public surface and every policy rule was applied the number of times it declared",
+      "failure_codes": ["SENSITIVE_VALUE_PRESENT", "REDACTION_POLICY_VIOLATION", "INPUT_SHAPE_INVALID"]
+    }
+  ]
+}

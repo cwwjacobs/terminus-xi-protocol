@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/xi/freeze-receipt.schema.json",
+  "title": "Terminus XI v1 Freeze Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "protocol_version", "runtime_version", "frozen_tree_sha256", "files", "issue_codes", "tests", "known_limitations"],
+  "properties": {
+    "schema": {"const": "terminus-xi.freeze-receipt.v1"},
+    "protocol_version": {"type": "string", "minLength": 1},
+    "runtime_version": {"type": "string", "minLength": 1},
+    "created_at_utc": {"type": "string"},
+    "frozen_tree_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "bytes"],
+        "properties": {
+          "path": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "bytes": {"type": "integer", "minimum": 0}
+        }
+      }
+    },
+    "issue_codes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity", "category"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "severity": {"enum": ["INFO", "WARN", "FAIL", "ERROR"]},
+          "category": {"type": "string"}
+        }
+      }
+    },
+    "issue_code_vocabulary_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "schemas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["schema_id", "path", "sha256"],
+        "properties": {
+          "schema_id": {"type": "string"},
+          "path": {"type": "string"},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    },
+    "registered_checks": {"type": "array", "items": {"type": "string"}},
+    "tests": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["command", "tests_run", "failures", "errors", "skipped", "passed"],
+      "properties": {
+        "command": {"type": "string"},
+        "tests_run": {"type": "integer", "minimum": 0},
+        "failures": {"type": "integer", "minimum": 0},
+        "errors": {"type": "integer", "minimum": 0},
+        "skipped": {"type": "integer", "minimum": 0},
+        "passed": {"type": "boolean"}
+      }
+    },
+    "determinism_probe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["boundary_id", "stable_core_sha256", "repeat_stable_core_sha256", "stable"],
+      "properties": {
+        "boundary_id": {"type": "string"},
+        "stable_core_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "repeat_stable_core_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "stable": {"type": "boolean"}
+      }
+    },
+    "archive_quarantine": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active_imports_of_archive", "checked_files"],
+      "properties": {
+        "active_imports_of_archive": {"type": "array", "items": {"type": "string"}},
+        "checked_files": {"type": "integer", "minimum": 0}
+      }
+    },
+    "known_limitations": {"type": "array", "items": {"type": "string"}}
+  }
+}

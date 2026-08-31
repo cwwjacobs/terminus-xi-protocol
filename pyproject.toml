@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "terminus-xi-protocol"
+version = "1.0.0"
+description = "Deterministic runtime watchdogs for probabilistic systems, and the proof engine built on them."
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+# Only used to cross-check the standard-library validator in the test suite.
+# Nothing in the runtime needs it.
+dev = ["jsonschema>=4.0"]
+
+[project.scripts]
+terminus-xi = "terminus_xi.cli:main"
+terminus-proof = "terminus_proof.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["py.typed"]

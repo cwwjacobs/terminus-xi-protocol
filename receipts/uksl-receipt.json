@@ -1,0 +1,205 @@
+{
+  "closed": true,
+  "created_at_utc": "2026-08-31T02:48:47Z",
+  "engine_version": "terminus-proof/1.0.0",
+  "known_limitations": [
+    "Receipts are integrity documents, not signed attestations. They detect edits and incompleteness; they do not authenticate the producer.",
+    "A digest establishes identity of the bytes it covers. It proves nothing about truth, safety, authorship, authority, or semantic correctness.",
+    "Claim-boundary checks are bounded lexical and structural predicates over declared evidence. CLAIM_OVERBROAD means a frozen phrase was used, not that a statement is false.",
+    "The canonical proof uses fixture-backed recordings through the fixture-recording adapter. A live GTD/Labyrinth adapter is specified at the adapter boundary but not implemented; that repository was read-only reference for this UKSL.",
+    "One proof covers one fixture, one model identity, and one recorded pair of executions. It establishes nothing about any other fixture, model, or tool surface.",
+    "XI v1 admits one artifact at one named boundary per receipt. Multi-boundary release chains are out of scope for v1; the proof engine chains three boundaries itself.",
+    "MP4 output is byte-reproducible on one machine and ffmpeg build, not across machines. Verification re-hashes what is on disk, so this does not weaken it.",
+    "The Prism channel/boundary-state model is preserved as archive evidence and is deliberately not implemented in v1."
+  ],
+  "ksl": [
+    {
+      "closed": true,
+      "exit_gate": [
+        {
+          "blocker": null,
+          "clause": "one and only one active audit semantic exists",
+          "evidence": "run_check is defined in exactly one active module: ['audit.py']",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "issue codes are stable and tested",
+          "evidence": "31 codes frozen, vocabulary sha256 127369f8ff18fbe6df58066bf5d868b03f2cd704208b9af258de5778ff9b6794; tests/test_codes.py pins the severity class of every load-bearing code",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "same canonical input plus same contract produces byte-stable results except explicitly excluded temporal fields",
+          "evidence": "determinism probe at boundary xi.selftest: two runs under different clocks both produced stable core a84bc938b157b5bd",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "FAIL cannot be promoted by downstream code",
+          "evidence": "terminus_xi.admission.decide maps any FAIL to REJECT and any ERROR to ERROR regardless of policy; is_admitted accepts only 'ADMIT'. Asserted by tests/test_admission_and_receipt.py across all three on_warn settings.",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "archived contradictory implementations are not imported by active runtime",
+          "evidence": "quarantine scan over 49 active files found no import or path reference to archive/",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "all active tests pass",
+          "evidence": "221 tests, 0 failures, 0 errors, 0 skipped",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "a machine-readable freeze receipt records version, files/hashes, test result, and known limitations",
+          "evidence": "receipts/xi-v1-freeze-receipt.json binds 29 files under tree sha256 cfe003210ac3167f with 7 recorded limitations",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "required v1 components are implemented (charter, provenance, audit, admission, receipt, recovery)",
+          "evidence": "CHARTER.md plus provenance.py, audit.py, admission.py, receipt.py, recovery.py",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "schemas are implemented or deliberately versioned",
+          "evidence": "9 XI schemas frozen; check-contract.v2 and receipt.v2 are documented replacements and v1 documents still load",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "a deterministic CLI or module entry point verifies an artifact and emits a receipt",
+          "evidence": "python -m terminus_xi verify <artifact> --contracts <set> --boundary <id> --receipt <path>; exit code carries the admission",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "docs/XI_V1_FREEZE.md documents recovered vs new decisions and the v1 boundary",
+          "evidence": "docs/XI_V1_FREEZE.md and docs/AUDIT_SEMANTICS_DECISION.md",
+          "satisfied": true
+        }
+      ],
+      "freeze_receipt": "receipts/xi-v1-freeze-receipt.json",
+      "freeze_receipt_sha256": "9908541ae877ebf61305752a147425e36e58acce7e963b05926dda91a9c5f19d",
+      "ksl_id": "KSL-01",
+      "proof_dir": null,
+      "proof_id": null
+    },
+    {
+      "closed": true,
+      "exit_gate": [
+        {
+          "blocker": null,
+          "clause": "one command builds the canonical proof package",
+          "evidence": "python -m terminus_proof build demos/claim-boundary-audit.demo.json produced claim-boundary-audit-566438558d67 with admission ADMIT",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "one command independently verifies it",
+          "evidence": "python -m terminus_proof verify claim-boundary-audit-566438558d67 passed 15 independent checks",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "XI v1 is consumed as a dependency, not reimplemented inside the renderer",
+          "evidence": "no module under src/terminus_proof defines a verdict, admission, or receipt envelope; all three come from terminus_xi, and the domain checks register into terminus_xi.checks",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "negative tests prove failed parity/audit/redaction cannot produce an admitted success package",
+          "evidence": "5 negative demo specs (model parity, config drift, unsupported claim, no observed gap, redaction leak); tests/test_proof_negative.py asserts each is refused and emits no video, thumbnail, README, or listing copy",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "generated JSON parses and validates",
+          "evidence": "proof.json, receipt.json, both arm bundles, both arm receipts, findings.json, listing-assets.json, and proof-manifest.json all validate against their registered schemas",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "thumbnail opens as a valid image",
+          "evidence": "thumbnail.png parses as PNG 1280x720, 85787 bytes, CRC-checked IHDR and terminating IEND",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "MP4 probes successfully with ffmpeg/ffprobe",
+          "evidence": "ffprobe reports h264 1920x1080 at 30/1 fps, 55.000000s, 1650 frames",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "README and listing assets derive from admitted evidence",
+          "evidence": "README carries the artifact claim and all 10 package verdicts; every one of 5 listing bullets carries a derived_from pointer into proof.json",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "the required proof-package outputs are all present",
+          "evidence": "10/10 required files present: README.md, augmented.json, baseline.json, demo.mp4, findings.json, listing-assets.json, proof.json, receipt.json, thumbnail.png, transcript.txt",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "the fail-closed marketing rule holds",
+          "evidence": "write_package emits README, listing copy, thumbnail, and video only after is_admitted(); a rejected build writes NOT_ADMITTED.md under proofs/not-admitted/ and verify_package refuses a NOT_ADMITTED manifest",
+          "satisfied": true
+        },
+        {
+          "blocker": null,
+          "clause": "all tests pass",
+          "evidence": "221 tests, 0 failures, 0 errors",
+          "satisfied": true
+        }
+      ],
+      "freeze_receipt": null,
+      "freeze_receipt_sha256": null,
+      "ksl_id": "KSL-02",
+      "proof_dir": "proofs/claim-boundary-audit-566438558d67",
+      "proof_id": "claim-boundary-audit-566438558d67"
+    }
+  ],
+  "media_probe": {
+    "mp4": {
+      "avg_frame_rate": "30/1",
+      "bytes": 917949,
+      "codec_name": "h264",
+      "duration": "55.000000",
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "height": "1080",
+      "nb_read_frames": "1650",
+      "path": "/home/orz/Desktop/terminus-xi-protocol/proofs/claim-boundary-audit-566438558d67/demo.mp4",
+      "prober": "ffprobe",
+      "width": "1920"
+    },
+    "png": {
+      "bit_depth": 8,
+      "bytes": 85787,
+      "colour_type": 2,
+      "format": "png",
+      "height": 720,
+      "path": "/home/orz/Desktop/terminus-xi-protocol/proofs/claim-boundary-audit-566438558d67/thumbnail.png",
+      "width": 1280
+    }
+  },
+  "protocol_version": "terminus-xi/1.0.0",
+  "runtime_version": "terminus-xi-runtime/1.0.0",
+  "schema": "terminus.uksl-receipt.v1",
+  "tests": {
+    "command": "python tools/run_tests.py",
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests_run": 221
+  },
+  "uksl_id": "terminus-xi-protocol/UKSL-v1",
+  "unresolved_clauses": []
+}

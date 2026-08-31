@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/proof/claim-report.schema.json",
+  "title": "Terminus Proof Claim Report v1",
+  "description": "The claim set produced by one execution arm: what it asserts, the bound it asserts it within, the evidence it cites, and the limitations it declares. Shape only. Conformance to this schema says nothing about whether a claim is supported; that is decided by the claim contracts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["claims", "limitations"],
+  "properties": {
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["claim_id", "statement"],
+        "properties": {
+          "claim_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"},
+          "statement": {"type": "string", "minLength": 1},
+          "scope": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "asset_scope": {"type": "string"},
+              "time_window": {"type": "string"},
+              "surface": {"type": "string"}
+            }
+          },
+          "evidence_refs": {"type": "array", "items": {"type": "string"}}
+        }
+      }
+    },
+    "limitations": {"type": "array", "items": {"type": "string"}}
+  }
+}

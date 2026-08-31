@@ -31,3 +31,10 @@ Chosen for Terminus XI Protocol rather than claimed as recovered fact:
 - initial focus on deterministic watchdogs underneath probabilistic workers.
 
 Every later major architectural decision should be labeled recovered, inferred, or new.
+
+## Where the v1 decisions live
+
+This file records the bootstrap position. The frozen v1 decisions, labelled
+recovered / inferred / new, are in [`XI_V1_FREEZE.md`](XI_V1_FREEZE.md), and the
+resolution of the divergent audit semantics is in
+[`AUDIT_SEMANTICS_DECISION.md`](AUDIT_SEMANTICS_DECISION.md).

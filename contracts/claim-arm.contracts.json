@@ -1,0 +1,94 @@
+{
+  "schema": "terminus-xi.check-contract-set.v1",
+  "set_id": "terminus-proof.claim-arm",
+  "version": "1.0.0",
+  "description": "Claim Boundary Audit contracts, evaluated identically against every execution arm. Each contract is a bounded structural or lexical predicate over the arm's own declared evidence. None of them determines whether a statement is true; they establish whether a statement stays inside the bound its evidence supports.",
+  "contracts": [
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "claim.report_shape",
+      "version": "1.0.0",
+      "title": "Claim report has the frozen shape",
+      "category": "input",
+      "deterministic": true,
+      "implementation": "xi.schema_conformance.v1",
+      "input_contract": "the arm's claim report",
+      "input_pointers": {"report": "/output"},
+      "pass_condition": "the claim report validates against terminus-proof.claim-report.v1",
+      "failure_codes": ["SCHEMA_VIOLATION"],
+      "config": {"schema_id": "terminus-proof.claim-report.v1"}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "claim.scope_declared",
+      "version": "1.0.0",
+      "title": "Every claim declares its asset scope, time window, and surface",
+      "category": "claim",
+      "deterministic": true,
+      "implementation": "proof.claim_scope.v1",
+      "input_contract": "the claims array of the arm's claim report",
+      "input_pointers": {"claims": "/output/claims"},
+      "pass_condition": "every claim carries a scope object whose required fields are all present and non-empty",
+      "failure_codes": ["CLAIM_SCOPE_MISSING", "INPUT_SHAPE_INVALID"],
+      "config": {"required_scope_fields": ["asset_scope", "time_window", "surface"]}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "claim.not_overbroad",
+      "version": "1.0.0",
+      "title": "No claim uses unbounded certification language",
+      "category": "claim",
+      "deterministic": true,
+      "implementation": "proof.claim_overbroad.v1",
+      "input_contract": "the claims array of the arm's claim report",
+      "input_pointers": {"claims": "/output/claims"},
+      "pass_condition": "no claim statement contains a phrase from the frozen unbounded-language lexicon",
+      "failure_codes": ["CLAIM_OVERBROAD"],
+      "config": {
+        "lexicon": [
+          "fully secure",
+          "completely secure",
+          "no vulnerabilities",
+          "zero vulnerabilities",
+          "100% compliant",
+          "fully compliant",
+          "certified compliant",
+          "across all systems",
+          "all systems",
+          "every system",
+          "guaranteed",
+          "bulletproof",
+          "unhackable",
+          "complete coverage",
+          "total coverage"
+        ]
+      }
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "claim.evidence_cited",
+      "version": "1.0.0",
+      "title": "Every claim cites evidence that exists in the arm's evidence set",
+      "category": "evidence",
+      "deterministic": true,
+      "implementation": "proof.claim_citations.v1",
+      "input_contract": "the claims array and the evidence available to the arm",
+      "input_pointers": {"claims": "/output/claims", "evidence": "/evidence_available"},
+      "pass_condition": "every claim cites at least one evidence identifier and every cited identifier resolves in the evidence set",
+      "failure_codes": ["EVIDENCE_CITATION_MISSING", "EVIDENCE_REF_UNRESOLVED", "INPUT_SHAPE_INVALID"]
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "claim.limitations_declared",
+      "version": "1.0.0",
+      "title": "Limitations are stated and cover every declared evidence gap",
+      "category": "claim",
+      "deterministic": true,
+      "implementation": "proof.claim_limitations.v1",
+      "input_contract": "the arm's limitations and the coverage gaps declared by the fixture",
+      "input_pointers": {"limitations": "/output/limitations", "gaps": "/declared_gaps"},
+      "pass_condition": "the limitations list is non-empty and every declared gap appears in it",
+      "failure_codes": ["LIMITATIONS_ABSENT", "EVIDENCE_GAP_UNDECLARED", "INPUT_SHAPE_INVALID"]
+    }
+  ]
+}

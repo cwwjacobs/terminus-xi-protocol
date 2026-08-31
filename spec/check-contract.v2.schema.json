@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/xi/check-contract.v2.schema.json",
+  "title": "Terminus XI Check Contract v2",
+  "description": "Deliberately versioned replacement for terminus-xi.check-contract.v1. v2 is a strict superset in meaning: it adds the implementation binding, named input pointers, frozen check configuration, and contract-declared WARN escalation that v1 had no place to express. v1 documents remain loadable and are upgraded losslessly by terminus_xi.contracts.load_contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "check_id", "version", "deterministic", "implementation", "input_contract", "input_pointers", "pass_condition"],
+  "properties": {
+    "schema": {"const": "terminus-xi.check-contract.v2"},
+    "check_id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "title": {"type": "string"},
+    "category": {"type": "string"},
+    "deterministic": {"const": true},
+    "implementation": {"type": "string", "minLength": 1},
+    "input_contract": {"type": "string", "minLength": 1},
+    "input_pointers": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {"^[a-z][a-z0-9_]*$": {"type": "string", "pattern": "^(/[^/]*)*$"}},
+      "additionalProperties": false
+    },
+    "pass_condition": {"type": "string", "minLength": 1},
+    "failure_codes": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+      "uniqueItems": true
+    },
+    "escalate_codes": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+      "uniqueItems": true
+    },
+    "config": {"type": "object"}
+  }
+}

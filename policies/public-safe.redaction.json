@@ -1,0 +1,49 @@
+{
+  "schema": "terminus-proof.redaction-policy.v1",
+  "policy_id": "terminus-proof.public-safe",
+  "version": "1.0.0",
+  "description": "Public-safe projection policy for engagement evidence. Rules say what is removed; deny patterns say what must never survive. No secret literal appears in this file, because the file ships inside the published proof package.",
+  "rules": [
+    {
+      "rule_id": "mask-internal-host",
+      "description": "Internal hostnames under the customer's private domain.",
+      "action": "mask",
+      "match": {"kind": "regex", "expression": "\\b[A-Za-z0-9][A-Za-z0-9-]*\\.internal\\.acme-grid\\.example\\b"},
+      "required_hits": 1
+    },
+    {
+      "rule_id": "mask-access-key",
+      "description": "Deployment access-key identifiers.",
+      "action": "mask",
+      "match": {"kind": "regex", "expression": "\\bAKIA[0-9A-Z]{16}\\b"},
+      "required_hits": 1
+    },
+    {
+      "rule_id": "mask-email",
+      "description": "Individual and role mailbox addresses.",
+      "action": "mask",
+      "match": {"kind": "regex", "expression": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b"},
+      "required_hits": 1
+    },
+    {
+      "rule_id": "mask-private-ipv4",
+      "description": "RFC1918 addresses and CIDR blocks from the customer estate.",
+      "action": "mask",
+      "match": {"kind": "regex", "expression": "\\b10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}(?:/[0-9]{1,2})?\\b"},
+      "required_hits": 1
+    },
+    {
+      "rule_id": "drop-evidence-detail",
+      "description": "Raw evidence detail never leaves the boundary; only the reviewed summary does.",
+      "action": "drop",
+      "match": {"kind": "pointer", "expression": "/evidence/*/detail"},
+      "required_hits": 1
+    }
+  ],
+  "deny_patterns": [
+    {"pattern_id": "internal-hostname", "expression": "\\.internal\\.acme-grid\\.example\\b", "description": "customer internal hostname"},
+    {"pattern_id": "access-key", "expression": "\\bAKIA[0-9A-Z]{16}\\b", "description": "deployment access-key identifier"},
+    {"pattern_id": "email-address", "expression": "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}\\b", "description": "mailbox address"},
+    {"pattern_id": "private-ipv4", "expression": "\\b10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\b", "description": "RFC1918 address from the customer estate"}
+  ]
+}

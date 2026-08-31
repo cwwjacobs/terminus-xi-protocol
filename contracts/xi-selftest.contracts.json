@@ -1,0 +1,49 @@
+{
+  "schema": "terminus-xi.check-contract-set.v1",
+  "set_id": "xi.selftest",
+  "version": "1.0.0",
+  "description": "Minimal contract set exercising the frozen XI v1 substrate. Used by the determinism probe in the freeze receipt and by the CLI self-check.",
+  "contracts": [
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "selftest.artifact_present",
+      "version": "1.0.0",
+      "title": "Artifact is present and non-empty",
+      "category": "evidence",
+      "deterministic": true,
+      "implementation": "xi.not_empty.v1",
+      "input_contract": "the whole submitted artifact",
+      "input_pointers": {"artifact": ""},
+      "pass_condition": "the submitted artifact is not null, empty string, empty array, or empty object",
+      "failure_codes": ["EVIDENCE_MISSING"]
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "selftest.required_keys",
+      "version": "1.0.0",
+      "title": "Artifact carries its declared keys",
+      "category": "input",
+      "deterministic": true,
+      "implementation": "xi.required_keys.v1",
+      "input_contract": "the whole submitted artifact as an object",
+      "input_pointers": {"artifact": ""},
+      "pass_condition": "the artifact is an object carrying every key in config.keys",
+      "failure_codes": ["INPUT_SHAPE_INVALID", "EVIDENCE_INCOMPLETE"],
+      "config": {"keys": ["kind", "records"]}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "selftest.payload_size",
+      "version": "1.0.0",
+      "title": "Payload size is measurable and routine",
+      "category": "runtime",
+      "deterministic": true,
+      "implementation": "xi.payload_size.v1",
+      "input_contract": "the records array",
+      "input_pointers": {"records": "/records"},
+      "pass_condition": "canonical payload size is measurable and at or below config.max_bytes",
+      "failure_codes": ["PAYLOAD_SIZE_UNKNOWN"],
+      "config": {"max_bytes": 1000000}
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/proof/proof-arm.schema.json",
+  "title": "Terminus Proof Arm Record v1",
+  "description": "One execution arm inside the package artifact: its public-safe evidence bundle, the canonical digest that binds the standalone arm file, and the XI arm-boundary outcome. The arm's XI outcome is bound by stable_core_sha256 rather than receipt_sha256 so that the package artifact carries no clock reading.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["arm_id", "document_sha256", "evidence", "xi"],
+  "properties": {
+    "arm_id": {"type": "string", "minLength": 1},
+    "document_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "evidence": {"$ref": "evidence-bundle.schema.json"},
+    "xi": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["boundary_id", "admission", "stable_core_sha256", "contract_set_sha256", "verdicts", "finding_codes", "blocking_codes"],
+      "properties": {
+        "boundary_id": {"type": "string", "minLength": 1},
+        "admission": {"enum": ["ADMIT", "REJECT", "REVIEW", "ERROR"]},
+        "stable_core_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "contract_set_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "verdicts": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["check_id", "verdict", "codes"],
+            "properties": {
+              "check_id": {"type": "string", "minLength": 1},
+              "verdict": {"enum": ["PASS", "WARN", "FAIL", "ERROR"]},
+              "codes": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "finding_codes": {"type": "array", "items": {"type": "string"}},
+        "blocking_codes": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

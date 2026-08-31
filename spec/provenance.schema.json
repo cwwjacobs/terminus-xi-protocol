@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/xi/provenance.schema.json",
+  "title": "Terminus XI Provenance v1",
+  "description": "Deterministic identity envelope. Contains no clock reading and no random identifier: run_id is derived from the covered identities when the caller does not supply one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "run_id", "boundary_id", "protocol_version", "artifact"],
+  "properties": {
+    "schema": {"const": "terminus-xi.provenance.v1"},
+    "run_id": {"type": "string", "minLength": 1},
+    "job_id": {"type": ["string", "null"]},
+    "boundary_id": {"type": "string", "minLength": 1},
+    "protocol_version": {"type": "string", "minLength": 1},
+    "runtime_version": {"type": "string", "minLength": 1},
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_id", "kind", "sha256"],
+      "properties": {
+        "artifact_id": {"type": "string", "minLength": 1},
+        "kind": {"enum": ["json", "bytes"]},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "bytes": {"type": ["integer", "null"], "minimum": 0}
+      }
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ref", "sha256"],
+        "properties": {
+          "ref": {"type": "string", "minLength": 1},
+          "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "bytes": {"type": ["integer", "null"], "minimum": 0},
+          "role": {"type": ["string", "null"]}
+        }
+      }
+    },
+    "model": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["provider", "model_id"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "model_id": {"type": "string", "minLength": 1},
+        "params_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "fixture": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["fixture_id", "sha256"],
+      "properties": {
+        "fixture_id": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "tool_surface": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["tools", "sha256"],
+      "properties": {
+        "tools": {"type": "array", "items": {"type": "string"}},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "capability": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["capability_id", "version"],
+      "properties": {
+        "capability_id": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "source": {"type": ["string", "null"]}
+      }
+    },
+    "notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

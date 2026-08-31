@@ -1,0 +1,19 @@
+{
+  "schema": "terminus-xi.admission-policy.v1",
+  "policy_id": "terminus-proof.package",
+  "version": "1.0.0",
+  "description": "Admission policy for the proof-package boundary. Every gate that stands between evidence and a public marketing artifact is required; a missing result is a rejection, and WARN is never enough to publish.",
+  "on_warn": "REVIEW",
+  "required_checks": [
+    "proof.artifact_shape",
+    "proof.parity.model",
+    "proof.parity.fixture",
+    "proof.parity.tool_surface",
+    "proof.parity.config",
+    "proof.spec.faithful",
+    "proof.arms.bound",
+    "proof.evidence.complete",
+    "proof.claim.supported",
+    "proof.redaction.public_safe"
+  ]
+}

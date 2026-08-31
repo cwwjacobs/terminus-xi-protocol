@@ -1,0 +1,393 @@
+{
+  "archive_quarantine": {
+    "active_imports_of_archive": [],
+    "checked_files": 49
+  },
+  "created_at_utc": "2026-08-31T02:48:11Z",
+  "determinism_probe": {
+    "boundary_id": "xi.selftest",
+    "repeat_stable_core_sha256": "a84bc938b157b5bdbb701243d17cd0a40cf06dcefc6188cc2f527f32c42f8d0a",
+    "stable": true,
+    "stable_core_sha256": "a84bc938b157b5bdbb701243d17cd0a40cf06dcefc6188cc2f527f32c42f8d0a"
+  },
+  "files": [
+    {
+      "bytes": 1992,
+      "path": "contracts/xi-selftest.contracts.json",
+      "sha256": "786118b0af39e4fa34b54ca244826b424eaa558833c11fe020bf332ccf91b744"
+    },
+    {
+      "bytes": 344,
+      "path": "policies/xi-selftest.policy.json",
+      "sha256": "1f973ed850eef5f4206d3383d2a2b59b5d188f34ba85ecd058501e955d0f3936"
+    },
+    {
+      "bytes": 934,
+      "path": "spec/admission-policy.schema.json",
+      "sha256": "12cae13eb7b2746a757af393f47ae9007f66c7613b4f90d9dc40be6ea683cd01"
+    },
+    {
+      "bytes": 744,
+      "path": "spec/check-contract-set.schema.json",
+      "sha256": "d32426a21fbd46fbdc0d2342febe672a279b15263bde4d944a5cfe7221b510c5"
+    },
+    {
+      "bytes": 811,
+      "path": "spec/check-contract.schema.json",
+      "sha256": "7e834b979a5fd2b7412988c838d315e2d760fe1f300f45ddf7a1bcf2494ba4e3"
+    },
+    {
+      "bytes": 1751,
+      "path": "spec/check-contract.v2.schema.json",
+      "sha256": "13aaf5ce09328d8f9bf8c87d24f67cc8a1664130d3ed13fb98cc203fb045c196"
+    },
+    {
+      "bytes": 3428,
+      "path": "spec/freeze-receipt.schema.json",
+      "sha256": "e4b5f3cfc802adbfafcd321c7c2d0153a5c47bf983a4b1d3a575f19d179b3f0a"
+    },
+    {
+      "bytes": 3108,
+      "path": "spec/provenance.schema.json",
+      "sha256": "8b8030a9ef4c6a7698b49b62fb68d6c7eb8045b7e88dc37641cb8ee33ec439b9"
+    },
+    {
+      "bytes": 1005,
+      "path": "spec/receipt.schema.json",
+      "sha256": "824f2abd5a5b43761d07043d679133b799bccba6f630e5f36b5b0053af1a4e35"
+    },
+    {
+      "bytes": 2495,
+      "path": "spec/receipt.v2.schema.json",
+      "sha256": "e9923cd03c9cb74f886d14113020ce0e67cbd7e2415377d9f836210751934971"
+    },
+    {
+      "bytes": 1179,
+      "path": "spec/watchdog-result.schema.json",
+      "sha256": "5990757a6190eca8b8935a8f82e43562260d952af6c8b934d30e46e5c4e6537f"
+    },
+    {
+      "bytes": 503,
+      "path": "src/terminus_xi/__init__.py",
+      "sha256": "529ccf194916b618d429aebc139e10c2575468b1e64c90fee9a2500c07619c28"
+    },
+    {
+      "bytes": 130,
+      "path": "src/terminus_xi/__main__.py",
+      "sha256": "584378717551ce2c23b560d53e73d12c33ba7542b8884382e9875701c0a452fb"
+    },
+    {
+      "bytes": 6039,
+      "path": "src/terminus_xi/admission.py",
+      "sha256": "da215a41ad0bffad1eaa4a69fc56c26dbc21af45b1d3653100724565c558aee9"
+    },
+    {
+      "bytes": 4758,
+      "path": "src/terminus_xi/audit.py",
+      "sha256": "732007d0c8ec8440e424ae576f9c27788dfe8036e207febece68d58fe39ceb81"
+    },
+    {
+      "bytes": 4538,
+      "path": "src/terminus_xi/canonical.py",
+      "sha256": "d5dcedf950c565cf112688c562bd988fd85f0f3d77ced7063cfb462a2019875a"
+    },
+    {
+      "bytes": 2618,
+      "path": "src/terminus_xi/checks/__init__.py",
+      "sha256": "d07dfa4389e41ed0d4bb009895fd76d27a7a179661cf6cb96e5171bd0d22a0fa"
+    },
+    {
+      "bytes": 4789,
+      "path": "src/terminus_xi/checks/builtin.py",
+      "sha256": "bb39eec1f5e58ff3b9db550998d523e1a3615a46ff2cbe92be9dcbd20aedfa4f"
+    },
+    {
+      "bytes": 7333,
+      "path": "src/terminus_xi/cli.py",
+      "sha256": "a665a5d38629bb2f85b298240a286bf08419235189d954bc0b7ac337af60013a"
+    },
+    {
+      "bytes": 7417,
+      "path": "src/terminus_xi/codes.py",
+      "sha256": "c5d3e58159c64cd8ceef63ff55e4fd98693affc7e8be809d93a9f6d011757ac7"
+    },
+    {
+      "bytes": 7382,
+      "path": "src/terminus_xi/contracts.py",
+      "sha256": "087a03ba1b64c5785c2b7d7c76583cef2ace33cb000035d9920015027f5c65d8"
+    },
+    {
+      "bytes": 2298,
+      "path": "src/terminus_xi/engine.py",
+      "sha256": "8d5994b55c8cd43ee574f0f0947ff3df7e5d4816afb3e24ed037b16efdcb6768"
+    },
+    {
+      "bytes": 7288,
+      "path": "src/terminus_xi/freeze.py",
+      "sha256": "a5d7cb2ab21eb437090cdd66e747d2b8c17812bae02e4078b187dfe5ccfe1191"
+    },
+    {
+      "bytes": 8261,
+      "path": "src/terminus_xi/jsonschema_lite.py",
+      "sha256": "d2c17d5228787c6d9bf4ba652f91e71b52cc3eaef5da32d9c7b518eb1abce48d"
+    },
+    {
+      "bytes": 3468,
+      "path": "src/terminus_xi/provenance.py",
+      "sha256": "b9e0f0770d1fde5626beb5683fa5fc0f47463a8fc542fec0598ab644f5fbc7a1"
+    },
+    {
+      "bytes": 7188,
+      "path": "src/terminus_xi/receipt.py",
+      "sha256": "af8fc8f674441f7e8152c462b0e5d74c1910ae23f8657d99a7f66c062633c619"
+    },
+    {
+      "bytes": 4632,
+      "path": "src/terminus_xi/recovery.py",
+      "sha256": "39d2bf7f8a2d9fd7dd75e401c2f430f871f176d709f924c462264c7368d33ddc"
+    },
+    {
+      "bytes": 3157,
+      "path": "src/terminus_xi/results.py",
+      "sha256": "a578ac087d419c0c227104ff3e0d49ccdd6e10da91afe5ab49f62594dabe2a4a"
+    },
+    {
+      "bytes": 3333,
+      "path": "src/terminus_xi/schemas.py",
+      "sha256": "dc6e6c27e21d6b3e64e3fce3151305027ad7ccbf5f29077cf0c1c7fdd2863986"
+    }
+  ],
+  "frozen_tree_sha256": "cfe003210ac3167f85418bbbefff488925fb0caa4f5189fa00db68e13b8a4bf1",
+  "issue_code_vocabulary_sha256": "127369f8ff18fbe6df58066bf5d868b03f2cd704208b9af258de5778ff9b6794",
+  "issue_codes": [
+    {
+      "category": "parity",
+      "code": "CHANGED_VARIABLE_ABSENT",
+      "severity": "FAIL"
+    },
+    {
+      "category": "runtime",
+      "code": "CHECK_ERROR",
+      "severity": "ERROR"
+    },
+    {
+      "category": "runtime",
+      "code": "CHECK_NOT_FOUND",
+      "severity": "ERROR"
+    },
+    {
+      "category": "claim",
+      "code": "CLAIM_OVERBROAD",
+      "severity": "FAIL"
+    },
+    {
+      "category": "claim",
+      "code": "CLAIM_SCOPE_MISSING",
+      "severity": "FAIL"
+    },
+    {
+      "category": "claim",
+      "code": "CLAIM_UNSUPPORTED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "parity",
+      "code": "CONFIG_DRIFT_UNDECLARED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "runtime",
+      "code": "CONTRACT_INVALID",
+      "severity": "ERROR"
+    },
+    {
+      "category": "integrity",
+      "code": "CONTRADICTION_DETECTED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "parity",
+      "code": "DRIFT_DETECTED",
+      "severity": "WARN"
+    },
+    {
+      "category": "evidence",
+      "code": "EVIDENCE_CITATION_MISSING",
+      "severity": "FAIL"
+    },
+    {
+      "category": "evidence",
+      "code": "EVIDENCE_GAP_UNDECLARED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "evidence",
+      "code": "EVIDENCE_INCOMPLETE",
+      "severity": "FAIL"
+    },
+    {
+      "category": "evidence",
+      "code": "EVIDENCE_MISSING",
+      "severity": "FAIL"
+    },
+    {
+      "category": "evidence",
+      "code": "EVIDENCE_REF_UNRESOLVED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "parity",
+      "code": "FIXTURE_IDENTITY_MISMATCH",
+      "severity": "FAIL"
+    },
+    {
+      "category": "integrity",
+      "code": "HASH_MISMATCH",
+      "severity": "FAIL"
+    },
+    {
+      "category": "input",
+      "code": "INPUT_POINTER_MISSING",
+      "severity": "ERROR"
+    },
+    {
+      "category": "input",
+      "code": "INPUT_SHAPE_INVALID",
+      "severity": "FAIL"
+    },
+    {
+      "category": "claim",
+      "code": "LIMITATIONS_ABSENT",
+      "severity": "FAIL"
+    },
+    {
+      "category": "observation",
+      "code": "MEASUREMENT",
+      "severity": "INFO"
+    },
+    {
+      "category": "parity",
+      "code": "MODEL_IDENTITY_MISMATCH",
+      "severity": "FAIL"
+    },
+    {
+      "category": "runtime",
+      "code": "PAYLOAD_LARGE",
+      "severity": "WARN"
+    },
+    {
+      "category": "runtime",
+      "code": "PAYLOAD_SIZE_UNKNOWN",
+      "severity": "ERROR"
+    },
+    {
+      "category": "recovery",
+      "code": "RECOVERY_BUDGET_EXHAUSTED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "recovery",
+      "code": "RECOVERY_NOT_REVALIDATED",
+      "severity": "FAIL"
+    },
+    {
+      "category": "redaction",
+      "code": "REDACTION_POLICY_VIOLATION",
+      "severity": "FAIL"
+    },
+    {
+      "category": "runtime",
+      "code": "REQUIRED_CHECK_MISSING",
+      "severity": "FAIL"
+    },
+    {
+      "category": "input",
+      "code": "SCHEMA_VIOLATION",
+      "severity": "FAIL"
+    },
+    {
+      "category": "redaction",
+      "code": "SENSITIVE_VALUE_PRESENT",
+      "severity": "FAIL"
+    },
+    {
+      "category": "parity",
+      "code": "TOOL_SURFACE_MISMATCH",
+      "severity": "FAIL"
+    }
+  ],
+  "known_limitations": [
+    "Receipts are integrity documents, not signed attestations. They detect edits and incompleteness; they do not authenticate the producer.",
+    "A digest establishes identity of the covered bytes only. It proves nothing about truth, safety, authorship, authority, or semantic correctness.",
+    "Claim-boundary style checks are bounded lexical and structural predicates over declared evidence. They cannot determine whether a statement is true.",
+    "XI v1 admits exactly one artifact at one named boundary per receipt. Multi-boundary release chains are out of scope for v1.",
+    "terminus-xi.check-contract.v1 documents are accepted and upgraded in memory, but new contracts should be authored as v2.",
+    "The historical Prism channel/boundary-state model is preserved as archive evidence and is deliberately not implemented in v1.",
+    "TERMINUS_XI_NOW overrides the receipt clock for reproducible builds. It is a build convenience and carries no authority."
+  ],
+  "protocol_version": "terminus-xi/1.0.0",
+  "registered_checks": [
+    "xi.hash_binding.v1",
+    "xi.not_empty.v1",
+    "xi.payload_size.v1",
+    "xi.required_keys.v1",
+    "xi.schema_conformance.v1"
+  ],
+  "runtime_version": "terminus-xi-runtime/1.0.0",
+  "schema": "terminus-xi.freeze-receipt.v1",
+  "schemas": [
+    {
+      "path": "spec/admission-policy.schema.json",
+      "schema_id": "terminus-xi.admission-policy.v1",
+      "sha256": "12cae13eb7b2746a757af393f47ae9007f66c7613b4f90d9dc40be6ea683cd01"
+    },
+    {
+      "path": "spec/check-contract-set.schema.json",
+      "schema_id": "terminus-xi.check-contract-set.v1",
+      "sha256": "d32426a21fbd46fbdc0d2342febe672a279b15263bde4d944a5cfe7221b510c5"
+    },
+    {
+      "path": "spec/check-contract.schema.json",
+      "schema_id": "terminus-xi.check-contract.v1",
+      "sha256": "7e834b979a5fd2b7412988c838d315e2d760fe1f300f45ddf7a1bcf2494ba4e3"
+    },
+    {
+      "path": "spec/check-contract.v2.schema.json",
+      "schema_id": "terminus-xi.check-contract.v2",
+      "sha256": "13aaf5ce09328d8f9bf8c87d24f67cc8a1664130d3ed13fb98cc203fb045c196"
+    },
+    {
+      "path": "spec/freeze-receipt.schema.json",
+      "schema_id": "terminus-xi.freeze-receipt.v1",
+      "sha256": "e4b5f3cfc802adbfafcd321c7c2d0153a5c47bf983a4b1d3a575f19d179b3f0a"
+    },
+    {
+      "path": "spec/provenance.schema.json",
+      "schema_id": "terminus-xi.provenance.v1",
+      "sha256": "8b8030a9ef4c6a7698b49b62fb68d6c7eb8045b7e88dc37641cb8ee33ec439b9"
+    },
+    {
+      "path": "spec/receipt.schema.json",
+      "schema_id": "terminus-xi.receipt.v1",
+      "sha256": "824f2abd5a5b43761d07043d679133b799bccba6f630e5f36b5b0053af1a4e35"
+    },
+    {
+      "path": "spec/receipt.v2.schema.json",
+      "schema_id": "terminus-xi.receipt.v2",
+      "sha256": "e9923cd03c9cb74f886d14113020ce0e67cbd7e2415377d9f836210751934971"
+    },
+    {
+      "path": "spec/watchdog-result.schema.json",
+      "schema_id": "terminus-xi.watchdog-result.v1",
+      "sha256": "5990757a6190eca8b8935a8f82e43562260d952af6c8b934d30e46e5c4e6537f"
+    }
+  ],
+  "tests": {
+    "command": "python tools/run_tests.py",
+    "errors": 0,
+    "failures": 0,
+    "passed": true,
+    "skipped": 0,
+    "tests_run": 221
+  }
+}

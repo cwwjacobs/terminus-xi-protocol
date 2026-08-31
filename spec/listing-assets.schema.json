@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/proof/listing-assets.schema.json",
+  "title": "Terminus Proof Listing Assets v1",
+  "description": "The public-facing copy for a proof. Every string is derived from admitted evidence and carries a derived_from pointer into proof.json, so a reader can trace any sentence back to the artifact that licences it. Nothing here is hand-authored marketing.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "proof_id", "admitted", "headline", "summary", "bullets", "claim", "not_claimed", "limitations", "media"],
+  "properties": {
+    "schema": {"const": "terminus-proof.listing-assets.v1"},
+    "proof_id": {"type": "string", "minLength": 1},
+    "admitted": {"type": "boolean"},
+    "headline": {"type": "string", "minLength": 1},
+    "summary": {"type": "string", "minLength": 1},
+    "bullets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text", "derived_from"],
+        "properties": {
+          "text": {"type": "string", "minLength": 1},
+          "derived_from": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["statement", "scope", "derived_from"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "scope": {"type": "string", "minLength": 1},
+        "derived_from": {"type": "string", "minLength": 1}
+      }
+    },
+    "not_claimed": {"type": "array", "items": {"type": "string"}},
+    "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "media": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["video", "thumbnail"],
+      "properties": {
+        "video": {"type": "string", "minLength": 1},
+        "thumbnail": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

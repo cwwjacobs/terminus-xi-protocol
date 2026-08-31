@@ -1,0 +1,39 @@
+{
+  "schema": "terminus-proof.claim-report.v1",
+  "report_id": "INC-2026-0731-conclusion-augmented",
+  "claims": [
+    {
+      "claim_id": "C1",
+      "statement": "Within the collected EDR telemetry window, no process execution on WS-42 matched the deployed detection ruleset.",
+      "evidence_refs": ["E1", "E2"]
+    },
+    {
+      "claim_id": "C2",
+      "statement": "The reported phishing message was quarantined by the mail gateway before it reached the WS-42 mailbox.",
+      "evidence_refs": ["E4"]
+    },
+    {
+      "claim_id": "C3",
+      "statement": "Egress activity from VLAN 30 after 2026-08-02 is unestablished because netflow retention lapsed.",
+      "evidence_refs": ["E3"]
+    }
+  ],
+  "limitations": [
+    {
+      "text": "Netflow retention for VLAN 30 lapsed on 2026-08-02; egress activity after that date was not captured and cannot be ruled on.",
+      "evidence_ref": "E3"
+    },
+    {
+      "text": "A no-finding result is scoped to the deployed detection ruleset over the stated window. It is not a certification that the host is uncompromised.",
+      "evidence_ref": "E2"
+    }
+  ],
+  "scope": {
+    "assets": ["WS-42"],
+    "surfaces": ["endpoint-edr", "mail-gateway"],
+    "time_window": {
+      "start": "2026-07-31T00:00:00Z",
+      "end": "2026-08-07T00:00:00Z"
+    }
+  }
+}

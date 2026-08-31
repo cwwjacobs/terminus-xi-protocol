@@ -7,3 +7,12 @@ __pycache__/
 archive/**/*.zip
 archive/raw/
 .DS_Store
+
+# Build outputs. Proof packages are regenerable from a demo spec plus its
+# fixtures by one command, and the UKSL receipt records the digests of the
+# canonical one.
+proofs/
+build/
+dist/
+*.egg-info/
+.venv/

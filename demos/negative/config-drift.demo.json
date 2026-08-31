@@ -1,0 +1,97 @@
+{
+  "schema": "terminus-proof.demo-spec.v1",
+  "demo_id": "negative-config-parity",
+  "title": "Negative: undeclared configuration drift",
+  "description": "A second variable moved alongside the declared one. The comparison is no longer controlled.",
+  "capability": {
+    "capability_id": "claim-boundary-audit",
+    "version": "1.0.0",
+    "source": "terminus-xi-protocol/demos/claim-boundary-audit"
+  },
+  "claim": {
+    "statement": "On this fixture, enabling Claim Boundary Audit moved every claim inside the bound its cited evidence supports, and cleared every claim-boundary code that blocked the baseline run.",
+    "scope": "One fixture (cba-assessment-2026-08), one model identity, one tool surface, one contract set. A single recorded pair of executions.",
+    "kind": "delta",
+    "not_claimed": [
+      "That the resulting claims are true.",
+      "That the capability behaves this way on any other fixture, model, or tool surface.",
+      "That the assessed estate is secure, compliant, or free of defects.",
+      "That an admitted proof certifies the capability for production use."
+    ]
+  },
+  "changed_variable": {
+    "name": "capability.claim-boundary-audit",
+    "baseline_value": "disabled",
+    "augmented_value": "enabled",
+    "description": "The Claim Boundary Audit capability. Everything else in both runs is held identical and is checked, not assumed."
+  },
+  "fixture": {
+    "fixture_id": "cba-assessment-2026-08",
+    "path": "fixtures/claim-boundary-audit/assessment.fixture.json"
+  },
+  "model": {
+    "provider": "fixture-mock",
+    "model_id": "deterministic-writer/2026-08",
+    "params": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_output_tokens": 1200,
+      "seed": 11
+    }
+  },
+  "tool_surface": {
+    "tools": [
+      "fixture.read_evidence",
+      "fixture.list_evidence"
+    ]
+  },
+  "arms": {
+    "baseline": {
+      "arm_id": "baseline",
+      "adapter": {
+        "kind": "fixture-recording",
+        "path": "fixtures/claim-boundary-audit/baseline.recording.json"
+      },
+      "config": {
+        "capability.claim-boundary-audit": "disabled",
+        "system_prompt_id": "assessment-writeup.v3",
+        "max_output_tokens": 1200,
+        "temperature": 0
+      }
+    },
+    "augmented": {
+      "arm_id": "augmented",
+      "adapter": {
+        "kind": "fixture-recording",
+        "path": "fixtures/claim-boundary-audit/negative/augmented.config-drift.recording.json"
+      },
+      "config": {
+        "capability.claim-boundary-audit": "enabled",
+        "system_prompt_id": "assessment-writeup.v3",
+        "max_output_tokens": 1200,
+        "temperature": 0.7
+      }
+    }
+  },
+  "checks": {
+    "arm_contract_set": "contracts/claim-arm.contracts.json",
+    "arm_policy": "policies/claim-arm.policy.json",
+    "package_contract_set": "contracts/proof-package.contracts.json",
+    "package_policy": "policies/proof-package.policy.json"
+  },
+  "redaction": {
+    "policy": "policies/public-safe.redaction.json"
+  },
+  "render": {
+    "title": "Claim Boundary Audit",
+    "subtitle": "Same fixture. Same model. Same tools. One variable changed.",
+    "accent": "#7ee787",
+    "labels": {
+      "baseline": "Baseline - capability disabled",
+      "augmented": "Augmented - capability enabled",
+      "contract": "Frozen contract set evaluated against both runs",
+      "verdict": "XI admission decision at the package boundary",
+      "receipt": "Receipt and provenance"
+    }
+  }
+}
