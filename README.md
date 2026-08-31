@@ -23,6 +23,21 @@ XI is not a general agent, planner, persona, or model-based critic. Nothing
 under `src/terminus_xi/` calls a model, opens a socket, or reads a clock inside
 a check.
 
+
+## Positioning
+
+Terminus XI is a deterministic admission protocol for probabilistic artifacts. It binds exact inputs, frozen contracts, typed findings, provenance, and a named boundary decision into a reproducible receipt. The goal is not to make a probabilistic system deterministic; it is to make the rules governing what may cross a boundary explicit, replayable, and independently checkable.
+
+XI is not claimed to invent policy engines, provenance, admission control, or cryptographic digests. Its differentiation is the composition of those ideas around probabilistic outputs and evidence: generation does not grant authority, provenance does not imply correctness, and an artifact does not cross a governed boundary merely because the system that produced it reported success.
+
+In the canonical Terminus stack, XI is the proof and admission substrate beneath release tooling. Observation establishes what happened; XI establishes what evidence is admissible at a named boundary; downstream systems may then render or publish only what that admitted evidence supports.
+
+## The XI line
+
+The historical XI line explored a family of narrow operational roles around curation, validation, provenance, adjudication, archival continuity, and orchestration. Names such as `xiCurate`, `xiAudit`, `xiProvenance`, `Prism`, `Archivist`, and `Goldmine` survive in the archive as lineage evidence.
+
+XI v1 does not revive those historical components as autonomous agents. Instead, it preserves the durable principle underneath them: probabilistic work may be proposed elsewhere, while boundary enforcement remains bounded, deterministic, evidence-bearing, and fail-closed. Historical material is prior art for the protocol, not executable authority.
+
 ## Core rule
 
 > No unvalidated artifact may cross a governed stage boundary.
