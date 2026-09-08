@@ -1,8 +1,9 @@
 """Retention helper: local scratch may be deleted only after a verified Drive ack.
 
 A stubbed export (``"status": "stubbed"``) is never a verified ack, even when
-it records a sha256. A real export must carry ``"status": "exported"`` and a
-sha256 that matches the local run-artifact's canonical digest.
+it records a sha256. Partial or failed exports are likewise refused. A real
+export must carry ``"status": "exported"`` and a sha256 that matches the local
+run-artifact's canonical digest. Drive is never deleted from here.
 """
 
 from __future__ import annotations

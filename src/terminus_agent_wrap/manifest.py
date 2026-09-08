@@ -33,8 +33,9 @@ def build_manifest(
     artifact_sha256: str,
     receipt_sha256: str,
     files: Iterable[str],
+    export_pending: bool = False,
 ) -> dict[str, Any]:
-    return {
+    document: dict[str, Any] = {
         "schema": "terminus-agent-wrap.manifest.v1",
         "wrapper": WRAPPER_ID,
         "wrapper_version": WRAPPER_VERSION,
@@ -46,6 +47,9 @@ def build_manifest(
         "receipt_sha256": receipt_sha256,
         "files": [_file_entry(directory, name) for name in files],
     }
+    if export_pending:
+        document["export_pending"] = True
+    return document
 
 
 def write_manifest(directory: Path, document: Mapping[str, Any]) -> Path:

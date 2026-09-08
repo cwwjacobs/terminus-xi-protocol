@@ -17,8 +17,8 @@ Writes a scratch package under `runs/agent-wrap/<run_id>/`:
 events.jsonl
 run-artifact.json
 receipt.json
-drive_export.json   # spike stub, status=stubbed
-MANIFEST.json
+drive_export.json   # LocalOnlyExporter stub (status=stubbed) unless a Drive exporter is injected
+MANIFEST.json       # written before export, then refreshed to include drive_export.json
 ```
 
 The fixture is a short **failing** multi-step tool trace (search ok, fetch
@@ -57,9 +57,28 @@ Local `runs/agent-wrap/` (or `TERMINUS_AGENT_WRAP_SCRATCH`, or
 `/workspace/xi-traces/<run_id>/`) is **scratch**. Drive is the durable archive.
 
 `LocalOnlyExporter` writes `drive_export.json` with `"status": "stubbed"`.
-Prune **refuses** stubbed exports and sha256 mismatches. It deletes scratch
-only for `"status": "exported"` with a sha256 equal to the run-artifact's
-canonical digest. This spike does not upload to Drive.
+Prune **refuses** stubbed, partial, and failed exports, and sha256 mismatches.
+It deletes scratch only for `"status": "exported"` with a sha256 equal to the
+run-artifact's canonical digest.
+
+Drive is save/backup only: the adapter never deletes remote objects. Title
+collisions get a unique title (short content hash) or fail closed — never
+overwrite-in-place.
+
+### FakeTransport vs real transport
+
+`GoogleDriveExporter` does not import MCP. Inject a `DriveTransport` with only
+`search_files(query)` and `create_file(...)` (create folder or upload bytes,
+conversion off):
+
+- Tests: `GoogleDriveExporter(FakeDriveTransport())`.
+- Real Drive: a thin wrapper around the Drive MCP/API `search_files` /
+  `create_file` tools. Do not expose trash or update on that protocol.
+
+Remote layout is `Terminus/XI-Traces/<run_id>/`. `status: "exported"` requires
+every intended upload (`events.jsonl`, `run-artifact.json`, `receipt.json`,
+`MANIFEST.json`) to succeed with a remote id. Each ack `files[].sha256` is
+the local bytes hash of what was uploaded.
 
 ## Freeze
 
