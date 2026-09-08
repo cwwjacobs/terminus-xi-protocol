@@ -1,7 +1,11 @@
-"""Thin wrap: observe → package → admit via XI → archive stub.
+"""Thin wrap: observe → package → admit via XI → archive.
 
 The only admit path is ``terminus_xi.engine.verify_artifact``. This module
 does not call ``build_receipt`` or ``decide``.
+
+MANIFEST is written twice: a pre-export snapshot covering events, the
+run-artifact, and the receipt (so export never uploads a MANIFEST that is
+not yet on disk), then a refresh after ``drive_export.json`` exists.
 """
 
 from __future__ import annotations
@@ -20,7 +24,12 @@ from . import BOUNDARY_ID, WRAPPER_ID, WRAPPER_VERSION
 from . import checks as _checks  # noqa: F401
 from .artifact import build_run_artifact
 from .events import events_sha256, write_events_jsonl
-from .export import DriveExporter, LocalOnlyExporter
+from .export import (
+    DRIVE_EXPORT_NAME,
+    PACKAGE_CONTENT_FILES,
+    DriveExporter,
+    LocalOnlyExporter,
+)
 from .manifest import MANIFEST_NAME, build_manifest, write_manifest
 
 __all__ = [
@@ -34,13 +43,7 @@ __all__ = [
     "wrap_run",
 ]
 
-PACKAGE_FILES = (
-    "events.jsonl",
-    "run-artifact.json",
-    "receipt.json",
-    "drive_export.json",
-    MANIFEST_NAME,
-)
+PACKAGE_FILES = PACKAGE_CONTENT_FILES + (DRIVE_EXPORT_NAME, MANIFEST_NAME)
 
 _PACKAGE_DIR = Path(__file__).resolve().parent
 _REPO_ROOT = _PACKAGE_DIR.parents[1]
@@ -183,6 +186,24 @@ def wrap_run(
     write_json(directory / "receipt.json", verification.receipt)
 
     artifact_digest = sha256_canonical(artifact)
+    events_digest = events_sha256(recorded_events)
+    receipt_digest = str(verification.receipt["receipt_sha256"])
+
+    write_manifest(
+        directory,
+        build_manifest(
+            directory,
+            run_id=run_id,
+            boundary_id=boundary_id,
+            admission=verification.admission,
+            events_sha256=events_digest,
+            artifact_sha256=artifact_digest,
+            receipt_sha256=receipt_digest,
+            files=PACKAGE_CONTENT_FILES,
+            export_pending=True,
+        ),
+    )
+
     drive_export = (exporter or LocalOnlyExporter()).export(
         directory, sha256=artifact_digest, run_id=run_id
     )
@@ -192,10 +213,10 @@ def wrap_run(
         run_id=run_id,
         boundary_id=boundary_id,
         admission=verification.admission,
-        events_sha256=events_sha256(recorded_events),
+        events_sha256=events_digest,
         artifact_sha256=artifact_digest,
-        receipt_sha256=str(verification.receipt["receipt_sha256"]),
-        files=("events.jsonl", "run-artifact.json", "receipt.json", "drive_export.json"),
+        receipt_sha256=receipt_digest,
+        files=PACKAGE_CONTENT_FILES + (DRIVE_EXPORT_NAME,),
     )
     write_manifest(directory, manifest)
 
