@@ -21,7 +21,10 @@ for entry in (str(SRC), str(DEMO_DIR)):
     if entry not in sys.path:
         sys.path.insert(0, entry)
 
-from fixture import synthesize_failing_multi_step_trace  # noqa: E402
+from fixture import (  # noqa: E402
+    synthesize_failing_multi_step_trace,
+    synthesize_injected_hostile_plan,
+)
 
 from terminus_agent_wrap.wrap import default_scratch_root, wrap_run  # noqa: E402
 
@@ -35,20 +38,43 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="scratch root (default: runs/agent-wrap/ or TERMINUS_AGENT_WRAP_SCRATCH)",
     )
+    parser.add_argument(
+        "--hostile",
+        action="store_true",
+        help="run the injected-tool fixture through the wrap-side pre-tool gate",
+    )
     args = parser.parse_args(argv)
 
     # Receipt clock only. Event timestamps stay fixture-fixed in fixture.py.
     os.environ.setdefault("TERMINUS_XI_NOW", "2026-09-08T12:00:00Z")
 
-    wrapped = wrap_run(
-        synthesize_failing_multi_step_trace(),
-        scratch_root=Path(args.scratch) if args.scratch else default_scratch_root(),
-    )
+    scratch = Path(args.scratch) if args.scratch else default_scratch_root()
+    if args.hostile:
+        wrapped = wrap_run(
+            plan=synthesize_injected_hostile_plan(),
+            scratch_root=scratch,
+            agent={
+                "id": "demos.agent-run-wrap.injected-hostile",
+                "kind": "fixture-synthetic",
+                "version": "1",
+            },
+            config={
+                "fixture_id": "injected-hostile-plan-v1",
+                "event_timestamps": "fixture-fixed",
+                "live_hooks": False,
+            },
+        )
+    else:
+        wrapped = wrap_run(
+            synthesize_failing_multi_step_trace(),
+            scratch_root=scratch,
+        )
     summary = {
         "run_id": wrapped.run_id,
         "directory": str(wrapped.directory),
         "admission": wrapped.admission,
         "admitted": wrapped.admitted,
+        "halted": wrapped.halted,
         "events_sha256": wrapped.events_sha256,
         "artifact_sha256": wrapped.artifact_sha256,
         "stable_core_sha256": wrapped.receipt["stable_core_sha256"],

@@ -25,6 +25,17 @@ The fixture is a short **failing** multi-step tool trace (search ok, fetch
 error, canned halt). The *trace* can still be `ADMIT`ted when observation is
 well-formed: admission is about the package, not agent success.
 
+Pre-tool kill-switch: `evaluate_tool_proposal(...)` returns `ALLOW` or `HALT`
+before a fixture tool runs. Default-deny allowlist (`search`, `fetch`);
+unknown names HALT. The sealed policy never enters events or prompts. Online
+HALT is not XI admission — the halted package is still submitted to
+`verify_artifact` and is non-`ADMIT`. `gate_disabled` is test-only (no demo
+CLI flag) and defaults to off on `wrap_run` / `wrap_plan`.
+
+```bash
+PYTHONPATH=src python demos/agent-run-wrap/run.py --hostile
+```
+
 Event timestamps are **fixture-fixed** (`2026-09-08T12:00:00Z` plus seq
 seconds). They do not read the wall clock. Receipt `created_at_utc` still uses
 XI's clock; the demo sets `TERMINUS_XI_NOW=2026-09-08T12:00:00Z` so receipts

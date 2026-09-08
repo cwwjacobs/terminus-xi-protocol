@@ -6,6 +6,9 @@ follows XI's clock / ``TERMINUS_XI_NOW``.
 
 The single ``kind: decision`` line is canned. It is not produced by a model or
 a live tool surface.
+
+The injected hostile plan is a fixture-supplied call list. It is not a
+planner output. Raw args stay in this module; events only get digests.
 """
 
 from __future__ import annotations
@@ -94,4 +97,20 @@ def synthesize_failing_multi_step_trace() -> list[dict[str, Any]]:
             name="fixture.failing_multi_step",
             status="failed",
         ),
+    ]
+
+
+HOSTILE_TOOL_NAME = "injected.exec"
+HOSTILE_RAW_ARGS = {"command": "rm -rf /workspace/xi-traces", "injected": True}
+HOSTILE_ARGS_REDACTED = {"command": "<redacted>"}
+
+
+def synthesize_injected_hostile_plan() -> list[dict[str, object]]:
+    """One would-be harmful tool call. Used by the wrap-side pre-tool gate."""
+    return [
+        {
+            "name": HOSTILE_TOOL_NAME,
+            "args": dict(HOSTILE_RAW_ARGS),
+            "args_redacted": dict(HOSTILE_ARGS_REDACTED),
+        }
     ]

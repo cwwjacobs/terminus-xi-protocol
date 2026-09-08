@@ -1,7 +1,8 @@
 """Thin wrap: observe → package → admit via XI → archive stub.
 
 The only admit path is ``terminus_xi.engine.verify_artifact``. This module
-does not call ``build_receipt`` or ``decide``.
+does not call ``build_receipt`` or ``decide``. Pre-tool HALT is
+``evaluate_tool_proposal`` in ``gate.py``; it is not a second admission engine.
 """
 
 from __future__ import annotations
@@ -22,6 +23,7 @@ from .artifact import build_run_artifact
 from .events import events_sha256, write_events_jsonl
 from .export import DriveExporter, LocalOnlyExporter
 from .manifest import MANIFEST_NAME, build_manifest, write_manifest
+from .plan import PlanExecution, execute_plan
 
 __all__ = [
     "PACKAGE_FILES",
@@ -31,6 +33,7 @@ __all__ = [
     "default_policy",
     "default_scratch_root",
     "package_dir",
+    "wrap_plan",
     "wrap_run",
 ]
 
@@ -127,6 +130,8 @@ class WrappedRun:
     outcome: VerificationOutcome
     manifest: Mapping[str, Any]
     drive_export: Mapping[str, Any]
+    halted: bool = False
+    side_effects: tuple[Mapping[str, Any], ...] = ()
 
     @property
     def admission(self) -> str:
@@ -141,9 +146,24 @@ class WrappedRun:
         return self.outcome.receipt
 
 
-def wrap_run(
-    events: Sequence[Mapping[str, Any]],
+def wrap_plan(
+    proposals: Sequence[Any],
     *,
+    gate_disabled: bool = False,
+    **kwargs: Any,
+) -> WrappedRun:
+    """Execute a fixture plan through the pre-tool gate, then ``wrap_run``.
+
+    ``gate_disabled`` defaults to False. Passing True is test-only.
+    """
+    return wrap_run(plan=proposals, gate_disabled=gate_disabled, **kwargs)
+
+
+def wrap_run(
+    events: Sequence[Mapping[str, Any]] | None = None,
+    *,
+    plan: Sequence[Any] | None = None,
+    gate_disabled: bool = False,
     scratch_root: str | Path | None = None,
     agent: Mapping[str, Any] | None = None,
     tool_surface: Mapping[str, Any] | None = None,
@@ -155,9 +175,27 @@ def wrap_run(
     policy: AdmissionPolicy | None = None,
     boundary_id: str = BOUNDARY_ID,
 ) -> WrappedRun:
-    """Package one tool trace, admit it through XI, and write the run directory."""
+    """Package one tool trace, admit it through XI, and write the run directory.
+
+    Pass ``events`` to package an already-observed trace (no tool execution).
+    Pass ``plan`` to execute fixture proposals through ``evaluate_tool_proposal``
+    first. ``gate_disabled`` applies only to ``plan`` and defaults to False.
+    """
+    execution: PlanExecution | None = None
+    if plan is not None:
+        if events is not None:
+            raise ValueError("pass events or plan, not both")
+        execution = execute_plan(plan, gate_disabled=gate_disabled)
+        observed: Sequence[Mapping[str, Any]] = execution.events
+    elif events is None:
+        raise TypeError("wrap_run requires events or plan")
+    else:
+        observed = events
+    if gate_disabled and plan is None:
+        raise ValueError("gate_disabled is test-only and only valid with plan=")
+
     artifact = build_run_artifact(
-        events,
+        observed,
         boundary_id=boundary_id,
         agent=agent,
         tool_surface=tool_surface,
@@ -209,4 +247,6 @@ def wrap_run(
         outcome=verification,
         manifest=manifest,
         drive_export=dict(drive_export),
+        halted=False if execution is None else execution.halted,
+        side_effects=() if execution is None else execution.side_effects,
     )
