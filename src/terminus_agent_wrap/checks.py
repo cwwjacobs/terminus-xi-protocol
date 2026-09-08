@@ -14,11 +14,18 @@ from terminus_xi.results import Finding, finding
 
 from .events import ALLOWED_KINDS
 
-__all__ = ["digests_well_formed", "event_count", "required_kinds"]
+__all__ = [
+    "REQUIRED_KINDS",
+    "digests_well_formed",
+    "event_count",
+    "required_kinds",
+]
 
 _SHA256 = 64
 _HEX = frozenset("0123456789abcdef")
-_DEFAULT_KINDS = ("run_start", "tool_call", "tool_result", "decision", "run_end")
+# Observation envelope only. ``decision`` is allowed on a fixture line but is
+# not a protocol invariant (that would soft-creep toward a planner/agent).
+REQUIRED_KINDS = ("run_start", "tool_call", "tool_result", "run_end")
 
 
 def _is_sha256(value: Any) -> bool:
@@ -71,7 +78,7 @@ def required_kinds(inputs: Mapping[str, Any], config: Mapping[str, Any]) -> Sequ
     events = artifact.get("events")
     if not isinstance(events, list):
         return [finding("INPUT_SHAPE_INVALID", "events is not an array", "events")]
-    required = list(config.get("kinds", _DEFAULT_KINDS))
+    required = list(config.get("kinds", REQUIRED_KINDS))
     present = {
         event.get("kind")
         for event in events

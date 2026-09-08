@@ -44,7 +44,9 @@ python -m terminus_xi verify runs/agent-wrap/<run_id>/run-artifact.json \
 ```
 
 Spike contracts (stdlib predicates, no model/socket/clock): `event_count >= 1`,
-required kinds present, digests well-formed.
+required kinds present (`run_start`, `tool_call`, `tool_result`, `run_end`),
+digests well-formed. `decision` is an **allowed** kind (the fixture still
+emits one canned line) but is **not** required for ADMIT.
 
 `run-artifact.json` carries a digest-only `events` projection of the JSONL
 (no raw payloads). The XI receipt covers that artifact; it does not embed the JSONL.

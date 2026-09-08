@@ -28,10 +28,10 @@
       "implementation": "agent_wrap.required_kinds.v1",
       "input_contract": "the events array of the submitted run-artifact",
       "input_pointers": {"artifact": ""},
-      "pass_condition": "each kind in config.kinds appears at least once",
+      "pass_condition": "each kind in config.kinds appears at least once; decision is allowed but not required",
       "failure_codes": ["EVIDENCE_INCOMPLETE", "INPUT_SHAPE_INVALID"],
       "config": {
-        "kinds": ["run_start", "tool_call", "tool_result", "decision", "run_end"]
+        "kinds": ["run_start", "tool_call", "tool_result", "run_end"]
       }
     },
     {

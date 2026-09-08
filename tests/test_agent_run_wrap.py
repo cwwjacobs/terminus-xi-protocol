@@ -17,6 +17,7 @@ from terminus_xi.canonical import read_json, sha256_canonical, write_json  # noq
 from terminus_xi.engine import verify_artifact  # noqa: E402
 from terminus_xi.receipt import verify_receipt  # noqa: E402
 
+from terminus_agent_wrap.checks import REQUIRED_KINDS  # noqa: E402
 from terminus_agent_wrap.export import STATUS_EXPORTED, STATUS_STUBBED  # noqa: E402
 from terminus_agent_wrap.prune import PruneRefused, prune_run_dir  # noqa: E402
 from terminus_agent_wrap.wrap import (  # noqa: E402
@@ -148,8 +149,16 @@ class TestAgentRunWrap(unittest.TestCase):
         )
         self.assertEqual(sha256_canonical(first.artifact), sha256_canonical(second.artifact))
 
-    def test_drop_required_kind_is_not_admitted(self):
+    def test_drop_decision_kind_still_admits(self):
+        """decision is fixture-synthetic and allowed, not a protocol invariant."""
         events = [event for event in failing_events() if event["kind"] != "decision"]
+        self.assertTrue(any(event["kind"] == "tool_result" for event in events))
+        wrapped = wrap_fixture(self.scratch, events)
+        self.assertEqual(wrapped.admission, "ADMIT")
+        self.assertNotIn("decision", [event["kind"] for event in wrapped.events])
+
+    def test_drop_required_kind_is_not_admitted(self):
+        events = [event for event in failing_events() if event["kind"] != "tool_result"]
         wrapped = wrap_fixture(self.scratch, events)
         self.assertNotEqual(wrapped.admission, "ADMIT")
         self.assertEqual(wrapped.admission, "REJECT")
@@ -262,6 +271,13 @@ class TestAgentRunWrap(unittest.TestCase):
         self.assertTrue((WRAP_ROOT / "policies" / "agent-run.policy.json").is_file())
         self.assertTrue(default_contract_set().contracts)
         self.assertEqual(default_policy().on_warn, "REVIEW")
+        kinds_contract = next(
+            contract for contract in default_contract_set().contracts
+            if contract.check_id == "agent_wrap.required_kinds"
+        )
+        self.assertEqual(tuple(kinds_contract.config["kinds"]), REQUIRED_KINDS)
+        self.assertNotIn("decision", kinds_contract.config["kinds"])
+        self.assertEqual(REQUIRED_KINDS, ("run_start", "tool_call", "tool_result", "run_end"))
 
 
 if __name__ == "__main__":

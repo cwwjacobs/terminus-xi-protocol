@@ -23,6 +23,7 @@ __all__ = [
     "write_events_jsonl",
 ]
 
+# ``decision`` is allowed (fixture-synthetic) but is not in the required set.
 ALLOWED_KINDS = frozenset(
     {"run_start", "tool_call", "tool_result", "decision", "run_end", "error"}
 )
