@@ -25,3 +25,4 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 "*" = ["py.typed"]
+"terminus_agent_wrap" = ["py.typed", "contracts/*.json", "policies/*.json"]
