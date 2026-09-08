@@ -1,0 +1,51 @@
+{
+  "schema": "terminus-xi.check-contract-set.v1",
+  "set_id": "terminus-agent-wrap.agent-run",
+  "version": "1.0.0",
+  "description": "Spike contracts for one agent-run training-trace package. Stdlib predicates only: event_count >= 1, required kinds present, digests well-formed. No model, socket, or clock inside checks.",
+  "contracts": [
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "agent_wrap.event_count",
+      "version": "1.0.0",
+      "title": "Trace contains at least one event",
+      "category": "evidence",
+      "deterministic": true,
+      "implementation": "agent_wrap.event_count.v1",
+      "input_contract": "the submitted run-artifact",
+      "input_pointers": {"artifact": ""},
+      "pass_condition": "event_count is an integer at or above config.min_count and matches the events array length",
+      "failure_codes": ["EVIDENCE_MISSING", "EVIDENCE_INCOMPLETE", "INPUT_SHAPE_INVALID", "CONTRADICTION_DETECTED"],
+      "config": {"min_count": 1}
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "agent_wrap.required_kinds",
+      "version": "1.0.0",
+      "title": "Required event kinds are present",
+      "category": "evidence",
+      "deterministic": true,
+      "implementation": "agent_wrap.required_kinds.v1",
+      "input_contract": "the events array of the submitted run-artifact",
+      "input_pointers": {"artifact": ""},
+      "pass_condition": "each kind in config.kinds appears at least once; decision is allowed but not required",
+      "failure_codes": ["EVIDENCE_INCOMPLETE", "INPUT_SHAPE_INVALID"],
+      "config": {
+        "kinds": ["run_start", "tool_call", "tool_result", "run_end"]
+      }
+    },
+    {
+      "schema": "terminus-xi.check-contract.v2",
+      "check_id": "agent_wrap.digests_well_formed",
+      "version": "1.0.0",
+      "title": "Event digests are well-formed and bound",
+      "category": "integrity",
+      "deterministic": true,
+      "implementation": "agent_wrap.digests_well_formed.v1",
+      "input_contract": "events_sha256 and the digest-only events projection",
+      "input_pointers": {"artifact": ""},
+      "pass_condition": "events_sha256 is the canonical digest of events; each args_sha256/result_sha256 is 64-hex or null",
+      "failure_codes": ["HASH_MISMATCH", "INPUT_SHAPE_INVALID"]
+    }
+  ]
+}

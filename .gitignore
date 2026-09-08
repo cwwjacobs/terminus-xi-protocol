@@ -16,3 +16,7 @@ build/
 dist/
 *.egg-info/
 .venv/
+
+# Agent-run wrap local scratch. Drive is the durable archive; prune
+# refuses until a real export ack matches the run-artifact sha256.
+runs/agent-wrap/
