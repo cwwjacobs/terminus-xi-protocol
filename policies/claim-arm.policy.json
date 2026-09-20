@@ -1,0 +1,14 @@
+{
+  "schema": "terminus-xi.admission-policy.v1",
+  "policy_id": "terminus-proof.claim-arm",
+  "version": "1.0.0",
+  "description": "Admission policy for a single execution arm's claim set. Applied identically to the baseline arm and the augmented arm; the arms differ only in the evidence they submit.",
+  "on_warn": "REVIEW",
+  "required_checks": [
+    "claim.report_shape",
+    "claim.scope_declared",
+    "claim.not_overbroad",
+    "claim.evidence_cited",
+    "claim.limitations_declared"
+  ]
+}

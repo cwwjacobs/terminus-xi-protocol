@@ -1,0 +1,109 @@
+{
+  "schema": "terminus-proof.recording.v1",
+  "arm_id": "augmented",
+  "capability_enabled": true,
+  "model": {
+    "provider": "fixture-mock",
+    "model_id": "deterministic-writer/2026-08",
+    "params": {
+      "temperature": 0,
+      "top_p": 1,
+      "max_output_tokens": 1200,
+      "seed": 11
+    }
+  },
+  "tool_surface": {
+    "tools": [
+      "fixture.read_evidence",
+      "fixture.list_evidence"
+    ]
+  },
+  "config": {
+    "capability.claim-boundary-audit": "enabled",
+    "system_prompt_id": "assessment-writeup.v3",
+    "max_output_tokens": 1200,
+    "temperature": 0.7
+  },
+  "output": {
+    "claims": [
+      {
+        "claim_id": "C1",
+        "statement": "Across the 42 in-scope hosts scanned between 2026-08-01 and 2026-08-14, no critical-severity finding was open at the close of the window.",
+        "scope": {
+          "asset_scope": "42 in-scope hosts in the Acme Grid corporate segment",
+          "time_window": "2026-08-01 to 2026-08-14",
+          "surface": "authenticated vulnerability scan"
+        },
+        "evidence_refs": [
+          "EV-1"
+        ]
+      },
+      {
+        "claim_id": "C2",
+        "statement": "The edge proxy configuration matched the reviewed baseline for the two settings examined: TLS minimum version and the administrative access allowlist.",
+        "scope": {
+          "asset_scope": "the Acme Grid edge proxy",
+          "time_window": "reviewed 2026-08-09",
+          "surface": "manual configuration review of two settings"
+        },
+        "evidence_refs": [
+          "EV-2"
+        ]
+      },
+      {
+        "claim_id": "C3",
+        "statement": "Authentication log review over the window surfaced no successful authentication originating outside the allowed source ranges.",
+        "scope": {
+          "asset_scope": "the Acme Grid corporate segment",
+          "time_window": "2026-08-01 to 2026-08-14",
+          "surface": "authentication log review"
+        },
+        "evidence_refs": [
+          "EV-3"
+        ]
+      }
+    ],
+    "limitations": [
+      "The OT/ICS segment was out of scope for this engagement and was not assessed.",
+      "Credentialed scanning was unavailable for 6 of the 42 in-scope hosts.",
+      "A scan result establishes what the scanner observed inside its coverage. It does not establish that the assessed hosts are free of defects."
+    ]
+  },
+  "transcript": [
+    {
+      "step": 1,
+      "role": "task",
+      "text": "Write the findings summary for the Acme Grid corporate-segment security assessment covering 2026-08-01 to 2026-08-14. State only what the attached evidence establishes."
+    },
+    {
+      "step": 2,
+      "role": "tool",
+      "text": "fixture.list_evidence -> EV-1 (vulnerability-scan), EV-2 (configuration-review), EV-3 (log-review)"
+    },
+    {
+      "step": 3,
+      "role": "tool",
+      "text": "fixture.read_evidence EV-1 -> Authenticated vulnerability scan of 42 in-scope hosts across 10.4.0.0/16; representative host vault-prod-03.internal.acme-grid.example."
+    },
+    {
+      "step": 4,
+      "role": "capability",
+      "text": "claim-boundary-audit: draft claim C1 asserted 'the network is fully secure'. Rewriting to the observed bound: 42 in-scope hosts, 2026-08-01 to 2026-08-14, authenticated scan surface."
+    },
+    {
+      "step": 5,
+      "role": "capability",
+      "text": "claim-boundary-audit: draft claim C2 cited no evidence identifier. Binding it to EV-2 and narrowing it to the two settings the review actually examined."
+    },
+    {
+      "step": 6,
+      "role": "capability",
+      "text": "claim-boundary-audit: the fixture declares 2 coverage gaps that the draft omitted. Adding both to limitations before the claim set is emitted."
+    },
+    {
+      "step": 7,
+      "role": "model",
+      "text": "Emitting 3 scoped claims, each bound to one evidence identifier, plus 3 declared limitations."
+    }
+  ]
+}

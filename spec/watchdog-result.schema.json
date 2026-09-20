@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/xi/watchdog-result.schema.json",
+  "title": "Terminus XI Watchdog Result v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "check_id", "check_version", "verdict", "input_sha256", "findings"],
+  "properties": {
+    "schema": {"const": "terminus-xi.watchdog-result.v1"},
+    "check_id": {"type": "string", "minLength": 1},
+    "check_version": {"type": "string", "minLength": 1},
+    "verdict": {"enum": ["PASS", "WARN", "FAIL", "ERROR"]},
+    "input_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "config_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity", "message"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]*$"},
+          "severity": {"enum": ["INFO", "WARN", "FAIL", "ERROR"]},
+          "message": {"type": "string"},
+          "evidence_ref": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}

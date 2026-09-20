@@ -1,0 +1,22 @@
+__pycache__/
+*.py[cod]
+.env
+.env.*
+*.pem
+*.key
+archive/**/*.zip
+archive/raw/
+.DS_Store
+
+# Build outputs. Proof packages are regenerable from a demo spec plus its
+# fixtures by one command, and the UKSL receipt records the digests of the
+# canonical one.
+proofs/
+build/
+dist/
+*.egg-info/
+.venv/
+
+# Agent-run wrap local scratch. Drive is the durable archive; prune
+# refuses until a real export ack matches the run-artifact sha256.
+runs/agent-wrap/

@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gts.v1/prism_input.schema.json",
+  "title": "PrismInput",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "prism_input_id",
+    "created_at_utc",
+    "artifact_ref_id",
+    "artifact_type",
+    "actor_id",
+    "mode"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "prism_input"
+    },
+    "schema_version": {
+      "const": "gts.v1"
+    },
+    "prism_input_id": {
+      "type": "string",
+      "pattern": "^prm_in_[A-Za-z0-9._-]+$"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "artifact_ref_id": {
+      "type": "string"
+    },
+    "artifact_type": {
+      "type": "string",
+      "enum": [
+        "runner_action",
+        "teacher_output",
+        "student_output",
+        "candidate_row",
+        "drift_alarm_event",
+        "recovery_action",
+        "prism_observation",
+        "other"
+      ]
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "spatial_refraction",
+        "output_refraction",
+        "boundary_analysis"
+      ]
+    },
+    "context_bundle_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  }
+}

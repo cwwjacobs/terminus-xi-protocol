@@ -1,0 +1,8 @@
+{
+  "schema": "terminus-xi.admission-policy.v1",
+  "policy_id": "terminus-xi.selftest",
+  "version": "1.0.0",
+  "description": "Self-check boundary policy. WARN requires human review; it is never silently admitted.",
+  "on_warn": "REVIEW",
+  "required_checks": ["selftest.artifact_present", "selftest.required_keys", "selftest.payload_size"]
+}

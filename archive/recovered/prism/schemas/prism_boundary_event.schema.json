@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gts.v1/prism_boundary_event.schema.json",
+  "title": "PrismBoundaryEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_name",
+    "schema_version",
+    "boundary_event_id",
+    "created_at_utc",
+    "prism_split_id",
+    "boundary_state",
+    "recommended_action"
+  ],
+  "properties": {
+    "schema_name": {
+      "const": "prism_boundary_event"
+    },
+    "schema_version": {
+      "const": "gts.v1"
+    },
+    "boundary_event_id": {
+      "type": "string",
+      "pattern": "^prm_be_[A-Za-z0-9._-]+$"
+    },
+    "created_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prism_split_id": {
+      "type": "string"
+    },
+    "boundary_state": {
+      "type": "string",
+      "enum": [
+        "inside_gold",
+        "amber_drift",
+        "red_lock",
+        "grey_warning",
+        "violet_warning"
+      ]
+    },
+    "recommended_action": {
+      "type": "string",
+      "enum": [
+        "continue",
+        "repair",
+        "review",
+        "quarantine",
+        "reject",
+        "pause_and_escalate"
+      ]
+    },
+    "trigger_channels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "goal_alignment",
+          "grounding_integrity",
+          "risk_pressure",
+          "genericity",
+          "novelty",
+          "focus_coherence",
+          "audit_completeness"
+        ]
+      },
+      "default": []
+    },
+    "reason_short": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 280
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    }
+  }
+}

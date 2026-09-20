@@ -1,0 +1,12 @@
+{
+  "schema": "terminus-xi.admission-policy.v1",
+  "policy_id": "terminus-agent-wrap.agent-run",
+  "version": "1.0.0",
+  "description": "Agent-run wrap spike policy. WARN requires review; FAIL and ERROR remain fail-closed.",
+  "on_warn": "REVIEW",
+  "required_checks": [
+    "agent_wrap.event_count",
+    "agent_wrap.required_kinds",
+    "agent_wrap.digests_well_formed"
+  ]
+}

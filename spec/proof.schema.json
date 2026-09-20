@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/proof/proof.schema.json",
+  "title": "Terminus Proof Package Envelope v1",
+  "description": "proof.json. Wraps the deterministic package artifact with the temporal and receipt-linking fields that must not enter the artifact digest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "proof_id", "demo_id", "built_at_utc", "engine_version", "protocol_version", "admitted", "artifact_sha256", "artifact", "boundaries", "spec"],
+  "properties": {
+    "schema": {"const": "terminus-proof.proof.v1"},
+    "proof_id": {"type": "string", "minLength": 1},
+    "demo_id": {"type": "string", "minLength": 1},
+    "built_at_utc": {"type": "string", "minLength": 1},
+    "engine_version": {"type": "string", "minLength": 1},
+    "protocol_version": {"type": "string", "minLength": 1},
+    "runtime_version": {"type": "string", "minLength": 1},
+    "admitted": {"type": "boolean"},
+    "artifact_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "artifact": {"$ref": "proof-artifact.schema.json"},
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["demo_id", "path", "sha256"],
+      "properties": {
+        "demo_id": {"type": "string", "minLength": 1},
+        "path": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "boundaries": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["boundary_id", "admission", "receipt_path", "receipt_sha256", "stable_core_sha256"],
+        "properties": {
+          "boundary_id": {"type": "string", "minLength": 1},
+          "admission": {"enum": ["ADMIT", "REJECT", "REVIEW", "ERROR"]},
+          "receipt_path": {"type": "string", "minLength": 1},
+          "receipt_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "stable_core_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "schema_name": "prism_split",
+  "schema_version": "gts.v1",
+  "prism_split_id": "prm_sp_0001",
+  "created_at_utc": "2026-03-13T00:00:00Z",
+  "prism_input_id": "prm_in_0001",
+  "channels": {
+    "goal_alignment": 0.92,
+    "grounding_integrity": 0.88,
+    "risk_pressure": 0.21,
+    "genericity": 0.17,
+    "novelty": 0.54,
+    "focus_coherence": 0.83,
+    "audit_completeness": 0.95
+  },
+  "labels": [
+    "inside_gold"
+  ],
+  "reason_short": "High goal alignment and grounding; low risk and low genericity.",
+  "notes": []
+}

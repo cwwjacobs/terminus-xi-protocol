@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://terminus.local/proof/identified-document.schema.json",
+  "title": "Identified Document Reference",
+  "description": "A governing document bound by identity: what it is, which version, and the canonical digest of its exact content.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "version", "sha256"],
+  "properties": {
+    "id": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "path": {"type": ["string", "null"]}
+  }
+}

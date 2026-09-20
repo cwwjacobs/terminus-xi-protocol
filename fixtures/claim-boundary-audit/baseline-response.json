@@ -1,0 +1,23 @@
+{
+  "schema": "terminus-proof.claim-report.v1",
+  "report_id": "INC-2026-0731-conclusion-baseline",
+  "claims": [
+    {
+      "claim_id": "C1",
+      "statement": "The environment is secure and no compromise occurred on WS-42.",
+      "evidence_refs": []
+    },
+    {
+      "claim_id": "C2",
+      "statement": "Host WS-42 has been fully validated and is guaranteed clean.",
+      "evidence_refs": []
+    },
+    {
+      "claim_id": "C3",
+      "statement": "Egress traffic was monitored continuously throughout the incident.",
+      "evidence_refs": ["E9"]
+    }
+  ],
+  "limitations": [],
+  "scope": null
+}
