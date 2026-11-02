@@ -3,6 +3,14 @@
   "errors": 0,
   "failures": 0,
   "passed": true,
+  "provenance": {
+    "status": "historical-baseline",
+    "label": "Frozen observation recorded 2026-08-31 as the test input to the XI v1 freeze receipt (created 2026-08-31T02:48:11Z) and the UKSL closure receipt (2026-08-31T02:48:47Z). Both receipts embed a copy of this exact result. This file does not track HEAD.",
+    "observation_date_utc": "2026-08-31",
+    "commit": "Recorded against the pre-public development tree; the public repository is a single squashed commit (424014f). Bound by content to receipts/xi-v1-freeze-receipt.json and receipts/uksl-receipt.json; receipts/bootstrap-receipt.json names private bootstrap commit 98283c8462d8e9b67b53304da875040c606e5290.",
+    "environment": "Development machine with ffmpeg/ffprobe and the jsonschema dev extra installed, so none of the suite's two environment skip gates triggered (0 skipped). At HEAD the suite discovers 250 tests: the 29-test growth is exactly the agent-wrap spike (tests/test_agent_run_wrap.py, tests/test_drive_export.py, tests/test_tool_gate.py), which postdates this observation.",
+    "documentation": "docs/TEST_REPORT_PROVENANCE.md"
+  },
   "skipped": 0,
   "tests_run": 221
 }

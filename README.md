@@ -116,6 +116,7 @@ copy.
 | [`receipts/xi-v1-freeze-receipt.json`](receipts/xi-v1-freeze-receipt.json) | The XI v1 boundary: files and digests, issue-code vocabulary, schemas, test result, determinism probe, archive quarantine, known limitations. |
 | [`receipts/uksl-receipt.json`](receipts/uksl-receipt.json) | KSL-01 and KSL-02 closure, clause by clause, with the evidence for each. |
 | [`receipts/bootstrap-receipt.json`](receipts/bootstrap-receipt.json) | The original provenance binding of the historical import. |
+| [`receipts/test-report.json`](receipts/test-report.json) | The observed test run that fed the two receipts above (2026-08-31: 221 run, 0 skipped). A frozen historical baseline, not a tracker of HEAD — see [`docs/TEST_REPORT_PROVENANCE.md`](docs/TEST_REPORT_PROVENANCE.md) for provenance, count semantics, and skip reasons. |
 
 Reproduce all of them:
 
